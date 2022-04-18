@@ -1,8 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 const routes = [
   {
-    name: 'Home', path: '/home',
-    rediract: '/',
+    name: 'Home', path: '/',
+    rediract: '/home',
     component: () => import('../view/home/index.vue')
   },
   {

@@ -16,6 +16,27 @@ export default defineConfig({
       '@': resolve(__dirname, 'src'),
     }
   },
+  base: './',
+  assetsInclude: 'node_modules',
+  build: {
+    assetsDir: "static",
+    chunkSizeWarningLimit: 1500,
+    rollupOptions: {
+      input: {
+        index: resolve(__dirname, "index.html"),
+      },
+      output: {
+        chunkFileNames: 'static/js/[name]-[hash].js',
+        entryFileNames: "static/js/[name]-[hash].js",
+        assetFileNames: "static/[ext]/name-[hash].[ext]",
+        manualChunks (id) {
+          if (id.includes('node_modules')) {
+            return id.toString().split('node_modules/')[1].split('/')[0].toString();
+          }
+        }
+      }
+    },
+  },
   // 反向代理
   server: {
     port: 8080,
@@ -25,9 +46,9 @@ export default defineConfig({
     https: false,
     proxy: {
       '/api': {
-        target: 'https://www.vue-js.com/',
+        target: 'http://localhost:8881',
         changeOrigin: true,
-        rewrite: (paths) => paths.replace(/^\/api/, ''),
+        pathRewrite: (paths) => paths.replace(/^\/api/, ''),
       },
     },
   },

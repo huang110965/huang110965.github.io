@@ -1,5 +1,5 @@
 import axios from 'axios'
-export const baseUrl = import.meta.env.BASE_URL
+export const baseUrl = import.meta.env.NODE_ENV === 'development' ? 'http://localhost:8082' : ''
 console.log(import.meta.env, 'baseUrl');
 const instance = axios.create({
   baseURL: baseUrl,
@@ -9,7 +9,7 @@ const instance = axios.create({
   headers: {
     'Content-type': 'application/x-www-form-urlencoded',
     'timestamp': new Date().getTime(),
-    'Cookie': sessionStorage.getItem('__Token__')
+    'Cookies': sessionStorage.getItem('__Token__') || '123'
   }
 })
 //请求拦截器
@@ -19,9 +19,9 @@ instance.interceptors.request.use(config => {
 })
 //响应拦截器
 instance.interceptors.response.use(res => {
-
+  return res.data
 }, err => {
-  console.log(err);
+  console.log(err, 'errs');
   return Promise.reject(err)
 })
 export default instance

@@ -5,6 +5,8 @@ import App from './App.vue'
 import vant from './assets/js/vant'//vant组件库-按需引入
 import axios from './config/index'//ajax
 import VConsole from 'VConsole'//调试工具
+import 'amfe-flexible';
+import 'amfe-flexible/index.js';
 const app = createApp(App)
 app.config.globalProperties.$http = axios
 let vConsole = new VConsole();

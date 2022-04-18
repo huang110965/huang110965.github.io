@@ -3,8 +3,11 @@
     <div class="infinite-list-phantom" :style="{ height: listHeight + 'px' }"></div>
     <div class="infinite-list" :style="{ transform: getTransform }">
       <div ref="items" class="infinite-list-item" v-for="item in visibleData" :key="item.id">
-        <div>{{ item.value }}</div>
-        <slot :item="item"></slot>
+        <div>{{ item.CitySort }}</div>
+        <div>{{ item.CityName }}</div>
+        <!-- <slot :item="item"></slot> -->
+        <slot></slot>
+        <slot name="name"></slot>
       </div>
     </div>
   </div>
@@ -35,6 +38,7 @@ export default {
     },
     //获取真实显示列表数据
     visibleData () {
+      console.log(this.listData, 'listData');
       return this.listData.slice(this.start, Math.min(this.end, this.listData.length));
     },
     //结束索引
@@ -43,14 +47,31 @@ export default {
     },
 
   },
+  watch: {
+    listData: {
+      handler () {
+        this.screenHeight = this.$el?.clientHeight;
+        // console.log(this.screenHeight, this.$el, 'screenHeight');
+        this.start = 0;
+        this.$nextTick(() => {
+          this.itemSize = this.$refs.items?.[0].clientHeight
+          // console.log(this.$refs.items[0].clientHeight, '123');
+        })
+
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   mounted () {
-    this.screenHeight = this.$el.clientHeight;
+    this.screenHeight = this.$el?.clientHeight;
     // console.log(this.screenHeight, this.$el, 'screenHeight');
     this.start = 0;
     this.$nextTick(() => {
-      this.itemSize = this.$refs.items[0].clientHeight
-      console.log(this.$refs.items[0].clientHeight, '123');
+      this.itemSize = this.$refs.items?.[0].clientHeight
+      // console.log(this.$refs.items[0].clientHeight, '123');
     })
+
   },
   data () {
     return {
